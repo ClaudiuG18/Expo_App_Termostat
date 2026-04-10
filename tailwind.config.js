@@ -2,7 +2,8 @@
 module.exports = {
   // NOTE: Update this to include the paths to all files that contain Nativewind classes.
   content: [
-    "src/app/index.tsx",
+    "app/index.tsx",
+    "[id].tsx",
     "cards/roomCard.tsx",
     "./components/**/*.{js,jsx,ts,tsx}",
   ],
