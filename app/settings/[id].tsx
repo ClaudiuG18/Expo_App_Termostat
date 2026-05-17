@@ -1,13 +1,22 @@
+import { Picker } from "@react-native-picker/picker";
 import { useLocalSearchParams } from "expo-router";
-import { Pressable, Text, View } from "react-native";
+import { Text, View } from "react-native";
 import "../../global.css";
+import { syncWithServer } from "../../service/api";
 import { useSensorStore } from "../../service/dataStore";
 
 export default function Settings() {
   const { id } = useLocalSearchParams();
 
   const room = useSensorStore((state) => state.rooms.find((r) => r.id === id));
-
+  const tempOptions = Array.from(
+    { length: (30 - 19) / 0.5 + 1 },
+    (_, i) => 19 + i * 0.5,
+  );
+  const calibtempOptions = Array.from(
+    { length: (20 - -20) / 0.5 + 1 },
+    (_, i) => -20 + i * 0.5,
+  );
   if (!room) return <Text>Room not found</Text>;
   //useSensorStore((state) => state.updateRoom(room));
 
@@ -20,26 +29,45 @@ export default function Settings() {
           <Text className="text-2xl text-white">Calib </Text>
         </View>
         <View className="flex-row mt-1 justify-between">
-          <Pressable
-            onPress={() => {
-              const newSetpoint = room.setpoint + 0.5;
-              useSensorStore
-                .getState()
-                .updateRoom({ ...room, setpoint: newSetpoint });
-            }}
-          >
-            <Text className="text-2xl text-white">{room.setpoint}°C</Text>
-          </Pressable>
-          <Pressable
-            onPress={() => {
-              const newCalibTemp = room.calibTemp + 0.5;
-              useSensorStore
-                .getState()
-                .updateRoom({ ...room, calibTemp: newCalibTemp });
-            }}
-          >
-            <Text className="text-2xl text-white">{room.calibTemp}°C</Text>
-          </Pressable>
+          {/* Setpoint Picker */}
+          <View>
+            <Text className="text-white text-xs mb-1">Setpoint</Text>
+            <Picker
+              selectedValue={room.setpoint}
+              onValueChange={async (newSetpoint) => {
+                useSensorStore
+                  .getState()
+                  .updateRoom({ ...room, setpoint: newSetpoint });
+                await syncWithServer({ setpoint: newSetpoint, id: room.id });
+              }}
+              style={{ color: "white", width: 120 }}
+              dropdownIconColor="white"
+            >
+              {tempOptions.map((val) => (
+                <Picker.Item key={val} label={`${val}°C`} value={val} />
+              ))}
+            </Picker>
+          </View>
+
+          {/* CalibTemp Picker */}
+          <View>
+            <Text className="text-white text-xs mb-1">Calib Temp</Text>
+            <Picker
+              selectedValue={room.calibTemp}
+              onValueChange={async (newCalibTemp) => {
+                useSensorStore
+                  .getState()
+                  .updateRoom({ ...room, calibTemp: newCalibTemp });
+                await syncWithServer({ calibTemp: newCalibTemp, id: room.id });
+              }}
+              style={{ color: "white", width: 120 }}
+              dropdownIconColor="white"
+            >
+              {calibtempOptions.map((val) => (
+                <Picker.Item key={val} label={`${val}°C`} value={val} />
+              ))}
+            </Picker>
+          </View>
         </View>
       </View>
     </View>
