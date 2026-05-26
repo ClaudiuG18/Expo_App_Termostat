@@ -2,7 +2,7 @@ import { useSensorStore } from "../service/dataStore";
 
 export async function syncWithServer(command?: any) {
   try {
-    const res = await fetch("http://192.168.2.223:8787/api/server", {
+    const res = await fetch("https://termostat.claudiu-ghise.de/api/server", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
