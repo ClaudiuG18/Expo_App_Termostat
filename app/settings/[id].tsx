@@ -20,49 +20,61 @@ export default function Settings() {
   if (!room) return <Text>Room not found</Text>;
   //useSensorStore((state) => state.updateRoom(room));
 
-  return (
-    <View className="p-4 " style={{ flex: 1 }}>
-      <View className="bg-gray-700 rounded-lg shadow-md p-5 mb-4" style={{ maxWidth: 900, alignSelf: "center" }}>
-        <Text className="text-2xl font-bold text-white">{id}</Text>
-        <View className="flex-row mt-2 border-b border-gray-500 pb-2" style={{ justifyContent: "space-between" }}>
-          <Text className="text-2xl text-white">Set Temp</Text>
-          <Text className="text-2xl text-white">Calibrare Sensor</Text>
-        </View>
-        <View className="flex-row mt-1 "style={{ gap:16 }}
->
-          {/* Setpoint Picker */}
-          <View>
-            <Text className="text-white text-xs mb-1">Setpoint</Text>
+return (
+  <View className="p-4 flex-1 bg-gray-100 items-start">
+    <View
+      className="bg-gray-700 rounded-2xl shadow-md"
+      style={{
+        maxWidth: 500,
+        width: "90%",
+        padding: 24,
+        margin: 10,
+        borderRadius: 20,
+      }}
+    >
+      {/* Title */}
+      <Text className="text-3xl font-bold text-white" style={{ marginBottom: 20 }}>
+        {id}
+      </Text>
+
+      {/* Settings Row */}
+      <View className="flex-row" style={{ gap: 16 }}>
+        {/* Setpoint */}
+        <View style={{ flex: 1 }}>
+          <Text className="text-white text-sm font-semibold" style={{ marginBottom: 6, marginLeft: 4 }}>
+            Setpoint
+          </Text>
+          <View className="bg-white rounded-xl overflow-hidden">
             <Picker
               selectedValue={room.setpoint}
               onValueChange={async (newSetpoint) => {
-                useSensorStore
-                  .getState()
-                  .updateRoom({ ...room, setpoint: newSetpoint });
+                useSensorStore.getState().updateRoom({ ...room, setpoint: newSetpoint });
                 await syncWithServer({ setpoint: newSetpoint, id: room.id });
               }}
-              style={{ color: "grey", width: 100 }}
-              dropdownIconColor="white"
+              style={{ color: "#333", width: "100%", borderRadius: 10 }}
+              dropdownIconColor="#333"
             >
               {tempOptions.map((val) => (
                 <Picker.Item key={val} label={`${val}°C`} value={val} />
               ))}
             </Picker>
           </View>
+        </View>
 
-          {/* CalibTemp Picker */}
-          <View style={{ flex: 1 }}>
-            <Text className="text-white text-xs mb-1">Calibrare Sensor</Text>
+        {/* Calibration */}
+        <View style={{ flex: 1 }}>
+          <Text className="text-white text-sm font-semibold" style={{ marginBottom: 6, marginLeft: 4 }}>
+            Sensor Calibration
+          </Text>
+          <View className="bg-white rounded-xl overflow-hidden">
             <Picker
               selectedValue={room.calibTemp}
               onValueChange={async (newCalibTemp) => {
-                useSensorStore
-                  .getState()
-                  .updateRoom({ ...room, calibTemp: newCalibTemp });
+                useSensorStore.getState().updateRoom({ ...room, calibTemp: newCalibTemp });
                 await syncWithServer({ calibTemp: newCalibTemp, id: room.id });
               }}
-              style={{ color: "grey", width: 100 }}
-              dropdownIconColor="white"
+              style={{ color: "#333", width: "100%", borderRadius: 10 }}
+              dropdownIconColor="#333"
             >
               {calibtempOptions.map((val) => (
                 <Picker.Item key={val} label={`${val}°C`} value={val} />
@@ -72,5 +84,6 @@ export default function Settings() {
         </View>
       </View>
     </View>
-  );
+  </View>
+);
 }
