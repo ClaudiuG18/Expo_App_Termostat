@@ -1,17 +1,13 @@
 import { useSensorStore } from "../service/dataStore";
-
 export async function syncWithServer(command?: any) {
   try {
     const res = await fetch("https://termostat.claudiu-ghise.de/api/server", {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        id: command?.id ?? null,
-        cmd: command ?? null,
-      }),
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(command ? { id: command.id, cmd: command } : {}),
     });
+
+    if (!res.ok) throw new Error(`Server error: ${res.status}`);
 
     const data = await res.json();
 
@@ -24,7 +20,6 @@ export async function syncWithServer(command?: any) {
     return data;
   } catch (err: any) {
     console.error("syncWithServer failed:", err);
-    alert("EROARE: " + err.message); // ← ce eroare apare?
-    return null; // ← nu crapa, returneaza null
+    return null;
   }
 }
