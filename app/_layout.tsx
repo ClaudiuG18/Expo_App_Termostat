@@ -4,7 +4,11 @@ import { StyleSheet } from "react-native";
 
 export default function StackRoute() {
   return (
-    <Stack>
+    <Stack  screenOptions={{
+    headerStyle: { backgroundColor: "#78929e" },
+    headerTintColor: "#ffffff",
+    headerTitleStyle: { fontWeight: "bold" , fontSize: 24},
+  }}>
       <Stack.Screen name="index" options={{ title: "Home" }} />
       <Stack.Screen name="settings/[id]" options={{ title: "Settings" }} />
     </Stack>

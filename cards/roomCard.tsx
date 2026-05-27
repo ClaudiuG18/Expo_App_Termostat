@@ -20,7 +20,10 @@ export function RoomCard({ id, temp, hum, setpoint }: Props) {
       asChild
     >
       <Pressable>
-        <View className="bg-gray-700 rounded-lg shadow-md  flex-column p-5 mb-4">
+        <View
+    className="bg-gray-700 rounded-lg shadow-md flex-column p-5 mb-4"
+    style={{ maxWidth: 600, width: "100%", alignSelf: "center" }}
+  >
           <Text className="text-3xl font-bold text-white">{id}</Text>
 
           <View className="flex-row mt-2 justify-between border-b border-gray-500 pb-2">

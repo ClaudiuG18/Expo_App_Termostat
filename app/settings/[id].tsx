@@ -21,14 +21,15 @@ export default function Settings() {
   //useSensorStore((state) => state.updateRoom(room));
 
   return (
-    <View className="p-4 ">
-      <View className="bg-gray-700 rounded-lg shadow-md  flex-column p-5 mb-4">
+    <View className="p-4 " style={{ flex: 1 }}>
+      <View className="bg-gray-700 rounded-lg shadow-md p-5 mb-4" style={{ maxWidth: 900, alignSelf: "center" }}>
         <Text className="text-2xl font-bold text-white">{id}</Text>
-        <View className="flex-row mt-2 justify-between border-b border-gray-500 pb-2 mx-40">
+        <View className="flex-row mt-2 border-b border-gray-500 pb-2" style={{ justifyContent: "space-between" }}>
           <Text className="text-2xl text-white">Set Temp</Text>
-          <Text className="text-2xl text-white">Calib </Text>
+          <Text className="text-2xl text-white">Calibrare Sensor</Text>
         </View>
-        <View className="flex-row mt-1 justify-between">
+        <View className="flex-row mt-1 "style={{ gap:16 }}
+>
           {/* Setpoint Picker */}
           <View>
             <Text className="text-white text-xs mb-1">Setpoint</Text>
@@ -40,7 +41,7 @@ export default function Settings() {
                   .updateRoom({ ...room, setpoint: newSetpoint });
                 await syncWithServer({ setpoint: newSetpoint, id: room.id });
               }}
-              style={{ color: "white", width: 120 }}
+              style={{ color: "grey", width: 100 }}
               dropdownIconColor="white"
             >
               {tempOptions.map((val) => (
@@ -50,8 +51,8 @@ export default function Settings() {
           </View>
 
           {/* CalibTemp Picker */}
-          <View>
-            <Text className="text-white text-xs mb-1">Calib Temp</Text>
+          <View style={{ flex: 1 }}>
+            <Text className="text-white text-xs mb-1">Calibrare Sensor</Text>
             <Picker
               selectedValue={room.calibTemp}
               onValueChange={async (newCalibTemp) => {
@@ -60,7 +61,7 @@ export default function Settings() {
                   .updateRoom({ ...room, calibTemp: newCalibTemp });
                 await syncWithServer({ calibTemp: newCalibTemp, id: room.id });
               }}
-              style={{ color: "white", width: 120 }}
+              style={{ color: "grey", width: 100 }}
               dropdownIconColor="white"
             >
               {calibtempOptions.map((val) => (
